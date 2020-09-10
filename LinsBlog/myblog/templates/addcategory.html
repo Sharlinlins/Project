@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block title %}Create A New Blog Category{% endblock title %}
+
+{% block content %}
+
+{% if request.user.is_superuser %}
+
+<h1 class="head">Add Category</h1>
+<div class="ap_container">
+<form action="" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button class="btn btn-outline-secondary">Add Category</button>
+</form>
+</div>
+{% else %}
+
+<div class="alert alert-danger" role="alert">
+    <h4 class="msginfo">You are not allowed here!</h4>
+</div>
+
+{% endif %}
+
+{% endblock content %}

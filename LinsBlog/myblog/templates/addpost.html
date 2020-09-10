@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block title %}Create A New Blog Post!{% endblock title %}
+
+{% load static %}
+
+{% block content %}
+
+<link href="/static/linsblog/css/style.css" rel="stylesheet">
+
+{% if user.is_authenticated %}
+
+<h1 class="head">Add Blog Post</h1>
+<div class="ap_container">
+<form action="" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.media }}
+    {{ form.as_p }}
+    <button class="btn btn-outline-secondary">Post</button>
+</form>
+</div>
+
+<script>
+    var name = "{{ user.id }}";
+    document.getElementById("lins").value = name;
+</script>
+
+{% else %}
+
+<div class="alert alert-danger" role="alert">
+    <h4 class="msginfo">You are not allowed here!</h4>
+</div>
+
+{% endif %}
+
+{% endblock content %}

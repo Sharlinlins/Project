@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+<link href="/static/linsblog/css/style.css" rel="stylesheet">
+<style>
+    body {
+        font-family: "Roboto", sans-serif;
+        background-color: #fdfdfd;
+    }
+    
+    .head_text {
+        color: white;
+    }
+    
+    .card {
+        box-shadow: 0 16px 48px #E3E7EB;
+    }
+</style>
+
+<header class="masthead">
+    <div class="overlay"></div>
+    <div class="container">
+        <div class="row">
+            <div class=" col-md-8 col-md-10 mx-auto">
+                <div class="site-heading">
+                    <h3 class="p_head my-4 text-center">Blog Posts</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<div class="container">
+    <div class="row">
+        <!-- Blog Entries Column -->
+        <div class="col-md-12 mt-3 left">
+            {% for post in object_list %}
+            <div class="card mb-4">
+                <div class="card-body">
+                    <div class="line">
+                    <h2 class="p_title">{{ post.title }}</h2>
+                    <p class="p_title1 text-muted h6"><a href="{% url 'category' post.category %}">{{ post.category }}</a>
+                        | {{ post.author.first_name }} {{ post.author.last_name }}
+                        | {{ post.post_date }} </p>
+                    </div>
+                    <p class="p_body">{{ post.snippet|truncatewords:"30" }}</p>
+                    <a href="{% url 'details' post.pk %}" class="btn btn-outline-secondary">Read More &rarr;</a>
+                
+                {% if user.is_authenticated %}
+
+                {% if user.id == post.author.id %}
+                 <a class="btn btn-outline-primary" href="{% url 'editpost' post.pk %}"><i class="fa fa-pencil" aria-hidden="true"></i> Edit</a>
+                 <a class="btn btn-outline-danger" href="{% url 'deletepost' post.pk %}"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete</a>
+                {% endif %}
+        
+                {% endif %}
+            </div>
+            </div>
+            {% endfor %}
+        </div>
+
+    </div>
+</div>
+
+<div class="container">
+{% if is_paginated %}
+      {% if page_obj.has_previous %}
+        <a class="btn btn-outline-secondary mb-4" href="?page=1">First</a>
+        <a class="btn btn-outline-secondary mb-4" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+      {% endif %}
+
+      {% for num in page_obj.paginator.page_range %}
+        {% if page_obj.number == num %}
+          <a class="btn btn-secondary mb-4" href="?page={{ num }}">{{ num }}</a>
+        {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+          <a class="btn btn-outline-secondary mb-4" href="?page={{ num }}">{{ num }}</a>
+        {% endif %}
+      {% endfor %}
+
+      {% if page_obj.has_next %}
+        <a class="btn btn-outline-secondary mb-4" href="?page={{ page_obj.next_page_number }}">Next</a>
+        <a class="btn btn-outline-secondary mb-4" href="?page={{ page_obj.paginator.num_pages }}">Last</a>
+      {% endif %}
+    {% endif %}
+</div>
+{% endblock content %}

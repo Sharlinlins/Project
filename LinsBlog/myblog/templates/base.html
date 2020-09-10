@@ -1,0 +1,235 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+
+<head>
+  <title>
+    {% block title %}MyTech Blog!{% endblock title %}
+  </title>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link href="/static/linsblog/css/style.css" rel="stylesheet">
+
+</head>
+
+<body>
+  <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+    <a class="navbar-brand" href="{% url 'index' %}">MyTech Blog!</a>
+    <button class="navbar-toggler d-lg-none" type="button" data-toggle="collapse" data-target="#collapsibleNavId"
+      aria-controls="collapsibleNavId" aria-expanded="false" aria-label="Toggle navigation"></button>
+    <div class="collapse navbar-collapse" id="collapsibleNavId">
+      <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+
+        {% if cat_menu %}
+
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="dropdownId" data-toggle="dropdown" aria-haspopup="true"
+            aria-expanded="false">Categories</a>
+          <div class="dropdown-menu" aria-labelledby="dropdownId">
+
+            {% for item in cat_menu %}
+
+            <a class="dropdown-item" href="{% url 'category' item %}">{{ item }}</a>
+
+            {% endfor %}
+
+          </div>
+        </li>
+
+        {% else %}
+
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'category-list' %}">Category-List</a>
+        </li>
+
+        {% endif %}
+
+        {% if user.is_authenticated %}
+
+        {% if request.user.is_superuser %}
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'addpost' %}">Add Post</a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'addcategory' %}">Add Category</a>
+        </li>
+
+        {% else %}
+
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'addpost' %}">Add Post</a>
+        </li>
+
+        <!-- <li class="nav-item">
+          <a class="nav-link" href="{% url 'addcategory' %}">Add Category</a>
+        </li> -->
+        {% endif %}
+        {% else %}
+
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'register' %}">Register</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'login' %}">Login</a>
+        </li>
+
+        {% endif %}
+
+      </ul>
+
+      {% if user.is_authenticated %}
+      <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
+
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
+            {% if user.profile.profile_pic %}
+            <img src="{{ user.profile.profile_pic.url }}" class="rounded-circle" width="30" height="30">
+            {% else %}
+            <img src="{% static 'linsblog/images/download.png' %}" class="rounded-circle" width="30" height="30">
+            {% endif %}
+            {{ user.first_name }} {{ user.last_name }}
+          </a>
+
+          {% if request.user.is_superuser %}
+
+          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" href="{% url 'editprofile' %}"><i class="fa fa-cog" aria-hidden="true"></i> Edit
+              Settings</a>
+
+            {% if user.profile.id %}
+
+            <a class="dropdown-item" href="{% url 'editprofilepage' user.profile.id %}"><i class="fa fa-pencil"
+                aria-hidden="true"></i> Edit Profile Page</a>
+            <a class="dropdown-item" href="{% url 'showprofile' user.profile.id %}"><i class="fa fa-file-text"
+                aria-hidden="true"></i> Show Profile Page</a>
+
+            {% else %}
+
+            <a class="dropdown-item" href="{% url 'createprofilepage' %}"><i class="fa fa-plus" aria-hidden="true"></i>
+              Create Profile Page</a>
+
+            {% endif %}
+
+            <a class="dropdown-item" href="{% url 'logout' %}"><i class="fa fa-sign-out" aria-hidden="true"></i>
+              Logout</a>
+
+          </div>
+
+          {% else %}
+
+          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" href="{% url 'editprofilestaff' %}"><i class="fa fa-cog" aria-hidden="true"></i>
+              Edit Settings</a>
+
+            {% if user.profile.id %}
+
+            <a class="dropdown-item" href="{% url 'editprofilepage' user.profile.id %}"><i class="fa fa-pencil"
+                aria-hidden="true"></i> Edit Profile Page</a>
+            <a class="dropdown-item" href="{% url 'showprofile' user.profile.id %}"><i class="fa fa-file-text"
+                aria-hidden="true"></i> Show Profile Page</a>
+
+            {% else %}
+
+            <a class="dropdown-item" href="{% url 'createprofilepage' %}"><i class="fa fa-plus" aria-hidden="true"></i>
+              Create Profile Page</a>
+
+            {% endif %}
+
+            <a class="dropdown-item" href="{% url 'logout' %}"><i class="fa fa-sign-out" aria-hidden="true"></i>
+              Logout</a>
+
+          </div>
+
+          {% endif %}
+
+        </li>
+        {% endif %}
+
+    </div>
+  </nav>
+  <div class="container mt-5">
+
+    {% block content %}
+
+    {% endblock content %}
+
+  </div>
+  </div>
+
+  <footer class="mainfooter" role="contentinfo">
+    <div class="footer-middle">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-3 col-sm-6">
+            <!--Column1-->
+            <div class="footer-pad">
+              <h4 class="foothead">Address</h4>
+              <p class="footmsg">Sharlin Lins<br/>
+              North Street,<br/>
+              Marthandam, 629 165<br/>
+              Kanyakumari District<br>
+              Tamil Nadu, India
+              </p>
+            </div>
+          </div>
+          <div class="col-md-3 col-sm-6">
+            <!--Column1-->
+            <div class="footer-pad">
+              <h4 class="foothead">Contact</h4>
+              Email:
+              <p class="footmsg">Sharlinlinsls@gmail.com,<br/>
+              Sharlinlins@outlook.com</p>
+            </div>
+          </div>
+          <div class="col-md-3 col-sm-6">
+            <!--Column1-->
+            <div class="footer-pad">
+              <h4 class="foothead">Links</h4>
+              <p class="footmsg">
+              <a class="footmsg" href="{% url 'index' %}">Home</a><br/>
+              <a class="footmsg" href="{% url 'register' %}">Register</a><br/>
+              <a class="footmsg" href="{% url 'category-list' %}">Categories</a>
+            </p>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <h4 class="foothead">Follow Us</h4>
+            <ul class="social-network social-circle">
+              <li><a href="#" class="icoFacebook" title="Facebook"><i class="fa fa-facebook"></i></a></li>
+              <li><a href="#" class="icoLinkedin" title="Linkedin"><i class="fa fa-linkedin"></i></a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12 copy">
+            <p class="text-center">&copy; Copyright 2020 - Sharlin Lins. All rights reserved.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </footer>
+
+
+  <!-- Optional JavaScript -->
+  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
+    </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous">
+    </script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
+    </script>
+</body>
+
+</html>

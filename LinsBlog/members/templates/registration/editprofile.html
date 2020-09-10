@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block title %}Edit Settings{% endblock title %}
+
+{% block content %}
+
+<h1 class="head">Edit Settings</h1>
+<div class="ap_container">
+{{ user.profile.bio }}
+<br />
+<form action="" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button class="btn btn-outline-secondary">Update Settings</button>
+</form>
+</div>
+
+{% endblock content %}

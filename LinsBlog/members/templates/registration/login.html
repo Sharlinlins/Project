@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block title %}Login{% endblock title %}
+
+{% load static %}
+
+{% block content %}
+
+<link href="/static/linsblog/css/style.css" rel="stylesheet">
+
+<h1 class="head">Login</h1>
+<div class="container">
+    <div class="lg_container">
+<form action="" method="post">
+    {% csrf_token %}
+
+    <div class="form-group">
+        <div class="input-group">
+        <div class="input-group-prepend">
+            <span class="input-group-text" id="basic-addon1"><i class="fa fa-user-circle-o" aria-hidden="true"></i></span>
+          </div>
+        <input type="text" class="form-control" name="username" placeholder="Username">
+    </div>
+</div>
+    <div class="form-group">
+        <div class="input-group">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon1"><i class="fa fa-eye" aria-hidden="true"></i></span>
+              </div>
+        <input type="password" class="form-control" name="password" placeholder="Password">
+    </div>
+    </div>
+    <button class="btn btn-outline-secondary">Login</button>
+</form>
+<br/>
+<h6>Not Registered? Sign Up <a href="{% url 'register' %}">Here</a></h6>
+</div>
+</div>
+{% endblock content %}

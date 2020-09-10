@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+
+<link href="/static/linsblog/css/style.css" rel="stylesheet">
+
+{% if category_posts %}
+
+<h1 class="head">{{ cats }}</h1>
+<!-- <div class="col-md-12 mt-3 left">
+    <div class="card mb-4">
+        <div class="card-body"> -->
+            <ul>
+                {% for post in category_posts %}
+
+                <li class="p_title1">
+                    <a href="{% url 'details' post.pk %}">{{ post.title }}</a>
+                    - {{ post.author.first_name }} {{ post.author.last_name }}
+                    - {{ post.post_date }}
+
+                    {% if user.is_authenticated %}
+
+                    - <a href="{% url 'editpost' post.pk %}">Edit</a>
+                    - <a href="{% url 'deletepost' post.pk %}">Delete</a>
+
+                    {% endif %}
+
+                    {{ post.body|safe|truncatewords:"50" }}
+                </li>
+
+                {% endfor %}
+
+            </ul>
+        <!-- </div>
+    </div>
+</div> -->
+
+{% else %}
+
+<div class="alert alert-info" role="alert">
+    <h4 class="msginfo">Sorry this page does not exists!</h4>
+</div>
+
+{% endif %}
+
+{% endblock content %}

@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block title %}Register{% endblock title %}
+
+{% block content %}
+
+<link href="/static/linsblog/css/style.css" rel="stylesheet">
+
+<h1 class="head">Register</h1>
+<div class="ap_container">
+<form action="" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button class="btn btn-outline-secondary">Register</button>
+</form>
+</div>
+
+{% endblock content %}

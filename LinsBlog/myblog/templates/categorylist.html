@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<style>
+a {
+    color: #3f5a51;
+    text-decoration: none !important;
+}
+</style>
+
+<h1 class="head">Blog Categories</h1>
+
+{% for item in cat_menu_list %}
+
+<ul class="fa-ul">
+    <li><i class="fa fa-cog fa-spin fa-1x fa-fw"></i> <a href="{% url 'category' item %}">{{ item }}</a></li>
+</ul>
+
+{% endfor %}
+
+{% endblock content %}

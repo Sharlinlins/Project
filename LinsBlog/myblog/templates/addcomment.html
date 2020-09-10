@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block title %}Comment on Blog Post{% endblock title %}
+
+{% block content %}
+
+{% if user.is_authenticated %}
+
+<h1 class="head">Add Comment</h1>
+<div class="ap_container">
+<form action="" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button class="btn btn-outline-secondary">Add Comment</button>
+</form>
+</div>
+
+{% else %}
+
+<div class="alert alert-danger" role="alert">
+    <h4 class="msginfo">You are not allowed here! Login to Comment!</h4>
+  </div>
+
+{% endif %}
+
+{% endblock content %}

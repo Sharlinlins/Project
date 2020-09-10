@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block title %}Create A New Blog Post!{% endblock title %}
+
+{% block content %}
+
+{% if user.is_authenticated %}
+
+{% if user.id == post.author.id %}
+
+<h1 class="head">Edit Blog Post</h1>
+<div class="ap_container">
+<form action="" method="post">
+    {% csrf_token %}
+    {{ form.media }}
+    {{ form.as_p }}
+    <button class="btn btn-outline-secondary">Update</button>
+</form>
+</div>
+{% else %}
+
+<div class="alert alert-danger" role="alert">
+    <h4 class="msginfo">You are not allowed here!</h4>
+</div>
+
+{% endif %}
+
+{% else %}
+
+<div class="alert alert-danger" role="alert">
+    <h4 class="msginfo">You are not allowed here!</h4>
+</div>
+
+{% endif %}
+
+{% endblock content %}
